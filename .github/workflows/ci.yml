@@ -25,13 +25,8 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: build/test-results/*.xml
+        files: build/test-results/**/*.xml
     - name: Mutation Testing
       run: ./gradlew pitest
-    - name: Publish Mutation Testing Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-        files: build/reports/pitest/**/*.xml
     - name: Build with Gradle
       run: ./gradlew build
