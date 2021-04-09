@@ -10,8 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  IntegracionContinua:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +22,9 @@ jobs:
         distribution: 'adopt'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
+    - name: Unit Test
       run: ./gradlew clean test
-    - name: Build with Gradle
+    - name: Mutation Testing
       run: ./gradlew pitest
     - name: Build with Gradle
       run: ./gradlew build
