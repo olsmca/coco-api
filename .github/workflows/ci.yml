@@ -33,12 +33,9 @@ jobs:
       with:
         files: build/test-results/**/*.xml
         
-    - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.7
-      with:
-        reports: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
-        targetdir: ${{ github.workspace }}/build/jacocoHtml/
-        reporttypes: HtmlInline;Cobertura
+    - name: Generate JaCoCo Badge
+      id: jacoco
+      uses: cicirello/jacoco-badge-generator@v2.0.1
           
     - name: Build with Gradle
       run: ./gradlew build
