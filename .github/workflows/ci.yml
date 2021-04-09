@@ -24,7 +24,17 @@ jobs:
       run: chmod +x gradlew
     - name: Unit Test
       run: ./gradlew clean test
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: test-results/*.xml
     - name: Mutation Testing
       run: ./gradlew pitest
+    - name: Publish Mutation Testing Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: reports/pitest/**/*.xml
     - name: Build with Gradle
       run: ./gradlew build
