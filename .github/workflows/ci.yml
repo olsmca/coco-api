@@ -33,13 +33,12 @@ jobs:
       with:
         files: build/test-results/**/*.xml
         
-    - name: JaCoCo Report
-      uses: Madrapps/jacoco-report@v1.1
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.7
       with:
-        path: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
-        token: ${{ secrets.TOKEN_GITHUB }}
-        min-coverage-overall: 40
-        min-coverage-changed-files: 60
+        reports: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+        targetdir: ${{ github.workspace }}/build/jacocoHtml/
+        reporttypes: HtmlInline;Cobertura
           
     - name: Build with Gradle
       run: ./gradlew build
