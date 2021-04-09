@@ -26,6 +26,11 @@ jobs:
       if: always()
       with:
         files: build/test-results/**/*.xml
+    - name: JaCoCo Report
+      uses: Madrapps/jacoco-report@v1.1
+      with:
+        path: build/reports/jacoco/test/
+        token: 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
     - name: Mutation Testing
       run: ./gradlew pitest
     - name: Build with Gradle
