@@ -1,6 +1,8 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.7.RELEASE'
 	id 'java'
+	id 'info.solidsoft.pitest' version '1.4.6'
+	id 'jacoco'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -20,4 +22,38 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.1.7.RELEASE'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	ignoreFailures = true
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.6"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+pitest {
+    targetClasses = ['com.sura.*']
+    //excludedClasses = ['com.sura.**.*Main']
+    pitestVersion = '1.4.1' //not needed when a default PIT version should be used
+    threads = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+    //reportDir='target/pit-reports/pitest' 
+    enableDefaultIncrementalAnalysis = true
+    historyInputLocation = "${project.rootDir}/build/mutation/${project.name}-fastermutationtesting"
+    historyOutputLocation = "${project.rootDir}/build/mutation/${project.name}-fastermutationtesting"
+}
+task mutation(){
+    dependsOn "pitest"
 }

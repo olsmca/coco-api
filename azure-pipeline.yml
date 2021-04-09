@@ -1,0 +1,36 @@
+# Gradle
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  branches:
+    exclude:
+      - master
+      - develop
+pr:
+  branches:
+    include:
+    - feature/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: CI
+  jobs:
+  - job: test
+    steps:
+    - script: ./gradlew clean test
+  - job: mutation testing
+    steps:
+    - script: ./gradlew pitest
+  - job: build
+    steps:
+    - script: ./gradlew build -x test --stacktrace
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - script: echo Deploying the code!
+
