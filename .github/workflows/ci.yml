@@ -17,21 +17,29 @@ jobs:
       with:
         java-version: '8'
         distribution: 'adopt'
+        
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
     - name: Unit Test
       run: ./gradlew clean test
+      
+    - name: Mutation Testing
+      run: ./gradlew pitest
+      
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
         files: build/test-results/**/*.xml
+        
     - name: JaCoCo Report
       uses: Madrapps/jacoco-report@v1.1
       with:
-        path: build/reports/jacoco/test/
-        token: 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
-    - name: Mutation Testing
-      run: ./gradlew pitest
+        path: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+        token: ${{ secrets.TOKEN_GITHUB }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
+          
     - name: Build with Gradle
       run: ./gradlew build
