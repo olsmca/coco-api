@@ -58,7 +58,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: jacoco-report
-        path: build/jacocoHtml/
+        path: build/jacocoHtml/index.html
     
     - name: Build with Gradle
       run: ./gradlew build
